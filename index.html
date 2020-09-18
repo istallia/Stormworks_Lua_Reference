@@ -90,6 +90,18 @@
 							server.createPopup(peer_id, ui_id)
 						</code>
 					</pre>
+					<pre class="pre-line">
+						<code>
+							-- Player
+							name = server.getPlayerName(peer_id)
+							PLAYER_LIST = server.getPlayers()
+							matrix = server.getPlayerPos(peer_id)
+							server.teleportPlayer(peer_id, matrix)
+							server.killPlayer(peer_id)
+							server.setSeated(peer_Id, vehicle_id, seat_name)
+							x,y,z = server.getPlayerLookDirection(peer_id)
+						</code>
+					</pre>
 				</div>
 			</div>
 		</div>
