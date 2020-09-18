@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Stormworks Lua Reference</title>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	<link rel="stylesheet" href="./main.css">
+</head>
+<body>
+<div class="container">
+
+	<header class="row">
+		<h1 class="col">Stormworks(v1.0.1) Lua Reference</h1>
+	</header>
+
+	<div class="row">
+		<div class="col m12">
+			<div class="card">
+				<div class="card-content">
+					<span class="card-title">Lua Scripting Overview</span>
+					<p>
+						Luaスクリプティングはあなたに高度なミッションやカスタムゲームモードを作るためのツールを提供します。<br>
+						Stormworksでは、あなたのスクリプトがゲームを操作できるようないくつもの機能を提供しています。
+					</p>
+					<p>
+						このガイドは利用可能な関数について説明しますが、Luaスクリプティングを始めるためのチュートリアルではありません。
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="col m12">
+			<div class="card">
+				<div class="card-content">
+					<span class="card-title">Callback Functions</span>
+					<p>
+						以下は条件を満たした際に自動的に呼ばれる、スクリプトで使えるコールバック関数です。<br>
+						最もシンプルなコールバック関数は<code>onTick</code>で、ゲーム内tick毎に呼び出されます。
+					</p>
+					<pre class="pre-line">
+						<code>
+							function onTick(game_ticks)
+							function onCreate()
+							function onDestroy()
+							function onCustomCommand(full_message, user_peer_id, is_admin, is_auth, command, args ...)
+							function onChatMessage(sender_name, message)
+							function onPlayerJoin(steam_id, name, peer_id, is_admin, is_auth)
+							function onPlayerSit(peer_id, vehicle_id, seat_name)
+							function onPlayerRespawn(peer_id)
+							function onPlayerLeave(steam_id, name, peer_id, is_admin, is_auth)
+							function onSpawnVehicle(vehicle_id, peer_id, x, y, z)
+							function onTeleportVehicle(vehicle_id, peer_id, x, y, z)
+							function onDespawnVehicle(vehicle_id, peer_id)
+							function onSpawnMessionObject(object_id, name, OBJECT_TYPE, playlist_name)
+							function onVehicleDamaged(vehicle_id, damage)
+							function httpReply(port, request, reply)
+							function onFireExtinguished(x, y, z)
+						</code>
+					</pre>
+					<p>
+						<code>onCustomCommand</code>は「?」から始まるチャットのメッセージを検出できる柔軟な関数です。
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="col m12">
+			<div class="card">
+				<div class="card-content">
+					<span class="card-title">Server Functions</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</div>
+</body>
+</html>
