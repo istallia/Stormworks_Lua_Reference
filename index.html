@@ -68,6 +68,28 @@
 			<div class="card">
 				<div class="card-content">
 					<span class="card-title">Server Functions</span>
+					<p>
+						以下のいくつかの関数はすべて大文字の引数を含みます。それらの変数の説明は後述します。
+					</p>
+					<pre class="pre-line">
+						<code>
+							-- UI
+							server.announce(name, message)
+							server.whisper(peer_id, message)
+							server.notify(peer_id, title, message, NOTIFICATION_TYPE)
+							ui_id = ui.getMapID()
+							server.removeMapID(peer_id, ui_id)
+							server.addMapObject(peer_id, ui_id, POSITION_TYPE, MARKER_TYPE, x, y, z, parent_local_x, parent_local_y, parent_local_z, vehicle_id, object_id, label, vehicle_parent_id, radius, hover_level)
+							server.removeMapObject(peer_id, ui_id)
+							server.addMapLabel(peer_id, ui_id, LABEL_TYPE, name, x, y, z)
+							server.removeMapLabel(peer_id, ui_id)
+							server.addMapLine(peer_id, ui_id, start_matrix, end_matrix, width)
+							server.removeMapLine(peer_id, ui_id)
+							server.setPopup(peer_id, ui_id, name, is_show, text, x, y, z, is_worldspace, render_distance)
+							server.removePopup(peer_id, ui_id)
+							server.createPopup(peer_id, ui_id)
+						</code>
+					</pre>
 				</div>
 			</div>
 		</div>
