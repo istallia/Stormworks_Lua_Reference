@@ -6,6 +6,7 @@
 	<title>Stormworks Lua Reference</title>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.21.0/themes/prism-coy.min.css" rel="stylesheet" />
 	<link rel="stylesheet" href="./main.css">
 </head>
 <body>
@@ -39,7 +40,7 @@
 						最もシンプルなコールバック関数は<code>onTick</code>で、ゲーム内tick毎に呼び出されます。
 					</p>
 					<pre class="pre-line">
-						<code>
+						<code class="language-lua">
 							function onTick(game_ticks)
 							function onCreate()
 							function onDestroy()
@@ -72,7 +73,7 @@
 						以下のいくつかの関数はすべて大文字の引数を含みます。それらの変数の説明は後述します。
 					</p>
 					<pre class="pre-line">
-						<code>
+						<code class="language-lua">
 							-- UI
 							server.announce(name, message)
 							server.whisper(peer_id, message)
@@ -91,7 +92,7 @@
 						</code>
 					</pre>
 					<pre class="pre-line">
-						<code>
+						<code class="language-lua">
 							-- Player
 							name = server.getPlayerName(peer_id)
 							PLAYER_LIST = server.getPlayers()
@@ -113,12 +114,19 @@
 						このページはゲーム内の公式Luaガイドを元に和訳し、ついでに「こんな情報もあったらいいな」を追記していく感じのページです。  
 						そんな方はいないとは思いますが、<a href="https://github.com/istallia/Stormworks_Lua_Reference">GitHub</a>でホストしてるので、gitできる方は手伝ってくださるとありがたいです。(とりあえずは英文丸写しでもOKです)
 					</p>
+					<p>
+						使用したもの...<br>
+						<a href="https://materializecss.com">Materialize</a> - CSS Framework
+						<a href="https://prismjs.com">Prism</a> - Syntax Highlight
+					</p>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.21.0/components/prism-core.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.21.0/components/prism-lua.min.js"></script>
 
 </div>
 </body>
