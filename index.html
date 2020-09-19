@@ -185,6 +185,220 @@
 		<div class="col m12">
 			<div class="card">
 				<div class="card-content">
+					<span class="card-title">Types and Info</span>
+					<pre class="pre-line">
+						<code class="language-lua">
+							POSITION_TYPE |
+							0 = fixed,
+							1 = vehicle,
+							2 = object
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							MARKER_TYPE |
+							0 = delivery_target,
+							1 = survivor,
+							2 = object,
+							3 = waypoint,
+							4 = tutorial,
+							5 = fire,
+							6 = shark,
+							7 = ice,
+							8 = search_radius
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							LABEL_TYPE |
+							0 = none,
+							1 = cross,
+							2 = wreckage,
+							3 = terminal,
+							4 = military,
+							5 = heritage,
+							6 = rig,
+							7 = in_ustrial,
+							8 = hospital,
+							9 = science,
+							10 = airport,
+							11 = coastguard,
+							12 = lighthouse,
+							13 = fuel,
+							14 = fuel_sell
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							NOTIFICATION_TYPE |
+							0 = new_mission,
+							1 = new_mission_critical,
+							2 = failed_mission,
+							3 = failed_mission_critical,
+							4 = complete_mission,
+							5 = network_connect,
+							6 = network_disconnect,
+							7 = network_info,
+							8 = chat_message,
+							9 = network_info_critical
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							OBJECT_DATA | {
+							  ["name"] = name,
+							  ["display_name"] = display_name,
+							  ["type"] = TYPE_STRING,
+							  ["id"] = component_id,
+							  ["dynamic_object_type"] = OBJECT_TYPE,
+							  ["tags"] = {[i] = tag},
+							  ["transform"] = matrix,
+							  ["character_outfit_type"] = OUTFIT_TYPE
+							}
+
+							TYPE_STRING |
+							"zone",
+							"object",
+							"character",
+							"vehicle",
+							"flare",
+							"fire",
+							"loot",
+							"button",
+							"animal",
+							"ice",
+							"cargo_zone"
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							OBJECT_TYPE |
+							0 = none,
+							1 = character,
+							2 = crate_small,
+							3 = collectable,
+							4 = basketball,
+							S = television,
+							6 = barrel,
+							7 = schematic,
+							8 = debris,
+							9 = chair,
+							10 = trolley_food,
+							11 = trolley_med,
+							12 = clothing,
+							13 = office_chair,
+							14 = book,
+							15 = bottle,
+							16 = fryingpan,
+							17 = mug,
+							18 = saucepan,
+							19 = stool,
+							20 = telescope,
+							21 = log,
+							22 = bin,
+							23 = book_2,
+							24 = loot,
+							25 = blue_barrel,
+							26 = buoyancy_ring,
+							27 = container,
+							28 = gas_canister,
+							29 = pallet,
+							30 = storage_bin,
+							31 = fire_extinguisher,
+							32 = trolIey_tool,
+							33 = cafetiere,
+							34 = drawers_tools,
+							35 = glass,
+							36 = microwave,
+							37 = Elate,
+							38 = ox_closed,
+							39 = box_open,
+							40 = desk_lamp,
+							41 = eraser_board,
+							42 = folder,
+							43 = funnel,
+							44 = lamp,
+							45 = microscope,
+							46 = notebook,
+							47 = pen_marker,
+							48 = pencil,
+							49 = scales,
+							50 = science_beaker,
+							51 = science_cylinder,
+							52 = science_flask,
+							53 = tub_1,
+							54 = tub_2,
+							55 = filestack,
+							56 = barrel_toxic,
+							57 = flare,
+							58 = fire,
+							59 = animal,
+							60 = map_label,
+							61 = iceberg,
+							62 = small_flare,
+							63 = big_flare
+						</code>
+					</pre>
+					<pre class="re-line">
+						<code class="language-lua">
+							OUTFIT_TYPE |
+							0 = none,
+							1 = worker,
+							2 = fishing,
+							3 = waiter,
+							4 = swimsuit,
+							S = military,
+							6 = office,
+							7 = police,
+							8 = science,
+							9 = medical,
+							10 = wetsuit,
+							11 = civilian
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							GAME_SETTINGS |
+							"third_person",
+							"third_person_vehicle",
+							"vehicle_damage“,
+							"player_damage",
+							"npc_damage",
+							“sharks",
+							‘starting_currency",
+							“fast_travel",
+							“teleport_vehicle“,
+							“rogue_mode“,
+							"auto_refuel“,
+							"megalndon“,
+							"map_show_players“,
+							"map_show_vehicles",
+							“show_3d_waypoints",
+							"show_name_plates“,
+							“day_night_length“,
+							"infinite_money",
+							“settings_menu",
+							“unlock_all_islands“,
+							“infinite_batteries“,
+							“infinite_fuel",
+							“engine_overheating“,
+							”no_clip",
+							“map_teleport‘,
+							“cleanup_vehicle",
+							“clear_fow“,
+							“vehicie_spawning“,
+							“photo_mode",
+							“respawning”,
+							“settings_menu_lock”,
+							“despawn_on_leave"
+						</code>
+					</pre>
+				</div>
+			</div>
+		</div>
+		<div class="col m12">
+			<div class="card">
+				<div class="card-content">
 					<span class="card-title">About this page</span>
 					<p>
 						このページはゲーム内の公式Luaガイドを元に和訳し、ついでに「こんな情報もあったらいいな」を追記していく感じのページです。  
