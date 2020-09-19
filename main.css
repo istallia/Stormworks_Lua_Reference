@@ -4,4 +4,12 @@ h1 {
 }
 
 /* --- コード表示に関するスタイル --- */
-pre.pre-line, pre.pre-line code { tab-size : 0px; }
+pre.pre-line, pre.pre-line code {
+	tab-size : 0px;
+}
+pre.pre-line {
+	max-width : 70vw;
+}
+pre.pre-line code {
+	overflow-x : scroll;
+}
