@@ -146,6 +146,11 @@
 					<pre class="pre-line">
 						<code class="language-lua">
 							-- Mission
+							playlist_index = server.getPlaylistIndexByName(name)
+							playlist_index = server.getPlaylistIndexCurrent()
+							location_index = server.spawnMissionLocation(matrix, playlist_index, location_index)
+							-- 0,0,0 matrix will spawn at random location, otherwise this is a world position
+
 							path = server.getPlaylistPath(playlist_name, is_rom)
 							server.spawnObject(matrix, OBJECT_TYPE)
 							is_found, matrix = server.getObjectPos(object_id)
