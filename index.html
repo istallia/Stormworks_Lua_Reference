@@ -13,7 +13,7 @@
 <div class="container">
 
 	<header class="row">
-		<h1 class="col">Stormworks(v1.0.1) Lua Reference</h1>
+		<h1 class="col">Stormworks(v1.0.4) Lua Reference</h1>
 	</header>
 
 	<div class="row">
@@ -66,9 +66,12 @@
 							function onPlayerSit(peer_id, vehicle_id, seat_name)
 							function onPlayerRespawn(peer_id)
 							function onPlayerLeave(steam_id, name, peer_id, is_admin, is_auth)
-							function onSpawnVehicle(vehicle_id, peer_id, x, y, z)
-							function onTeleportVehicle(vehicle_id, peer_id, x, y, z)
-							function onDespawnVehicle(vehicle_id, peer_id)
+							function onToggleMap(peer_id, is_open)
+							function onPlayerDie(steam_id, name, peer_id, is_admin, is_auth)
+							function onVehicleSpawn(vehicle_id, peer_id, x, y, z)
+							function onVehicleLoad(vehicle_id)
+							function onVehicleTeleport(vehicle_id, peer_id, x, y, z)
+							function onVehicleDespawn(vehicle_id, peer_id)
 							function onSpawnMessionObject(object_id, name, OBJECT_TYPE, playlist_name)
 							function onVehicleDamaged(vehicle_id, damage)
 							function httpReply(port, request, reply)
