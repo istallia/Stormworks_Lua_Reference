@@ -103,6 +103,82 @@
 							x,y,z = server.getPlayerLookDirection(peer_id)
 						</code>
 					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							-- Vehicle
+							vehicle_id = server.spawnVehicle(matrix, playlist_index, component_id)
+							vehicle_id = server.spawnVehicleSavefile(matrix, save_name)
+							server.despawnVehicle(vehicle_id, is_instant)
+							matrix = server.getVehiclePos(vehicle_id, voxel_x = 0, voxel_y = 0, voxel_z = 0)
+							name = server.getVehicleName(vehicle_id)
+							server.teleportVehicle(matrix, vehicle_id)
+							server.c1eanVehicles()
+							server.pressVehicleButton(vehicle_id, button_name)
+							server.getVehicleFireCount(vehicle_id)
+							server.setVehicleTooltip(vehicle_id, text)
+							is_simulating = server.getVehicleSimulating(vehicle_id)
+							server.setVehicleTransponder(vehicle_id, is_active)
+							server.setVehicleEditable(vehicle_id, is_editable)
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							-- Mission
+							path = server.getPlaylistPath(playlist_name, is_rom)
+							server.spawnObject(matrix, OBJECT_TYPE)
+							is_found, matrix = server.getObjectPos(object_id)
+							object_id = server.spawnFire(matrix, size, magnitude, is_lit, is_initialzied, is_explosive, parent_vehicle_id, explosion_point, explosion_magnitude)
+							server.despawnObject(object_id, is_instant)
+							object_id = server.spawnCharacter(matrix, (outfit_id))
+							object_id = server.spawnAnimal(matrix, animal_type, scale)
+							server.despawnCharacter(object_id, is_instant)
+							hp, matrix = server.getCharacterData(object_id)
+							server.setCharacterData(object_id, hp, is_interactable)
+							server.setCharacterItem(object_id, slot, EQUIPMENT_ID, is_active)
+							tutorial_completed = server.getTutorial()
+							ZONE_LIST = server.getZones(tag(s))
+							is_in_zone = server.isInZone(matrix, zone_name)
+							matrix = server.spawnMissionLocation(matrix, playlist_index, location_index)
+							server.spawnMissionObject(matrix, playlist_index, location_index, object_index)
+							server.despawnMissionObject(object_id, is_instant)
+							count = server.getPlaylistCount()
+							PLAYLIST_DATA = server.getPlaylistData(p1ay1ist_index)
+							LOCATION_DATA = server.getLocationData(playlist_index, location_index)
+							OBJECT_DATA = server.getLocationObjectData(playIist_index, location_index, object_index)
+							server.setFireData(object_id, is_lit, is_explosive)
+							is_lit = server.getFireData(object_id)
+							matrix = server.getOceanTransform(matrix, min_search_range, max_search_range)
+							is_in_area = server.isInTransformArea(matrix_object, matrix_zone, zone_x, zone_y, zone_z)
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							-- Game
+							server.setGameSetting(setting_name, bool)
+							GAME_SETTINGS = server.getGameSettings()
+							server.setCurrency(amount)
+							amount = server.getCurrencg()
+							days_survived = server.getDateValue()
+							system_time = getTimeMillisec()
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							-- Http
+							server.httpGet(port, request)
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							-- Admin
+							server.banPlayer(peer_id)
+							server.kickPlayer(peer_id)
+							server.addAdmin(peer_id)
+							server.removeAdmin(peer_id)
+							server.addAuth(peer_id)
+							server.removeAuth(peer_id)
+						</code>
+					</pre>
 				</div>
 			</div>
 		</div>
