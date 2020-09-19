@@ -13,6 +13,7 @@ pre.pre-line {
 pre.pre-line code {
 	overflow-x : scroll;
 }
+code { font-family : Consolas, Menlo, 'Liberation Mono', Courier, monospace; }
 
 /* --- リストに関するスタイル --- */
 ul.rect li {
