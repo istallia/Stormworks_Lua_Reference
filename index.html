@@ -99,7 +99,7 @@
 							server.notify(peer_id, title, message, NOTIFICATION_TYPE)
 							ui_id = ui.getMapID()
 							server.removeMapID(peer_id, ui_id)
-							server.addMapObject(peer_id, ui_id, POSITION_TYPE, MARKER_TYPE, x, y, z, parent_local_x, parent_local_y, parent_local_z, vehicle_id, object_id, label, vehicle_parent_id, radius, hover_level)
+							server.addMapObject(peer_id, ui_id, POSITION_TYPE, MARKER_TYPE, x, y, z, parent_local_x, parent_local_y, parent_local_z, vehicle_id, object_id, label, vehicle_parent_id, radius, hover_lavel)
 							server.removeMapObject(peer_id, ui_id)
 							server.addMapLabel(peer_id, ui_id, LABEL_TYPE, name, x, y, z)
 							server.removeMapLabel(peer_id, ui_id)
@@ -118,7 +118,7 @@
 							matrix = server.getPlayerPos(peer_id)
 							server.teleportPlayer(peer_id, matrix)
 							server.killPlayer(peer_id)
-							server.setSeated(peer_Id, vehicle_id, seat_name)
+							server.setSeated(peer_id, vehicle_id, seat_name)
 							x,y,z = server.getPlayerLookDirection(peer_id)
 						</code>
 					</pre>
@@ -131,7 +131,7 @@
 							matrix = server.getVehiclePos(vehicle_id, voxel_x = 0, voxel_y = 0, voxel_z = 0)
 							name = server.getVehicleName(vehicle_id)
 							server.teleportVehicle(matrix, vehicle_id)
-							server.c1eanVehicles()
+							server.cleanVehicles()
 							server.pressVehicleButton(vehicle_id, button_name)
 							server.getVehicleFireCount(vehicle_id)
 							server.setVehicleTooltip(vehicle_id, text)
@@ -161,9 +161,9 @@
 							server.spawnMissionObject(matrix, playlist_index, location_index, object_index)
 							server.despawnMissionObject(object_id, is_instant)
 							count = server.getPlaylistCount()
-							PLAYLIST_DATA = server.getPlaylistData(p1ay1ist_index)
+							PLAYLIST_DATA = server.getPlaylistData(playlist_index)
 							LOCATION_DATA = server.getLocationData(playlist_index, location_index)
-							OBJECT_DATA = server.getLocationObjectData(playIist_index, location_index, object_index)
+							OBJECT_DATA = server.getLocationObjectData(playlist_index, location_index, object_index)
 							server.setFireData(object_id, is_lit, is_explosive)
 							is_lit = server.getFireData(object_id)
 							matrix = server.getOceanTransform(matrix, min_search_range, max_search_range)
@@ -176,7 +176,7 @@
 							server.setGameSetting(setting_name, bool)
 							GAME_SETTINGS = server.getGameSettings()
 							server.setCurrency(amount)
-							amount = server.getCurrencg()
+							amount = server.getCurrency()
 							days_survived = server.getDateValue()
 							system_time = getTimeMillisec()
 						</code>
@@ -237,7 +237,7 @@
 							4 = military,
 							5 = heritage,
 							6 = rig,
-							7 = in_ustrial,
+							7 = industrial,
 							8 = hospital,
 							9 = science,
 							10 = airport,
@@ -297,7 +297,7 @@
 							2 = crate_small,
 							3 = collectable,
 							4 = basketball,
-							S = television,
+							5 = television,
 							6 = barrel,
 							7 = schematic,
 							8 = debris,
@@ -324,13 +324,13 @@
 							29 = pallet,
 							30 = storage_bin,
 							31 = fire_extinguisher,
-							32 = trolIey_tool,
+							32 = trolley_tool,
 							33 = cafetiere,
 							34 = drawers_tools,
 							35 = glass,
 							36 = microwave,
-							37 = Elate,
-							38 = ox_closed,
+							37 = plate,
+							38 = box_closed,
 							39 = box_open,
 							40 = desk_lamp,
 							41 = eraser_board,
@@ -366,7 +366,7 @@
 							2 = fishing,
 							3 = waiter,
 							4 = swimsuit,
-							S = military,
+							5 = military,
 							6 = office,
 							7 = police,
 							8 = science,
@@ -389,7 +389,7 @@
 							"teleport_vehicle",
 							"rogue_mode",
 							"auto_refuel",
-							"megalndon",
+							"megalodon",
 							"map_show_players",
 							"map_show_vehicles",
 							"show_3d_waypoints",
@@ -405,7 +405,7 @@
 							"map_teleport",
 							"cleanup_vehicle",
 							"clear_fow",
-							"vehicie_spawning",
+							"vehicle_spawning",
 							"photo_mode",
 							"respawning",
 							"settings_menu_lock",
