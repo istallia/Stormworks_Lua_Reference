@@ -103,6 +103,24 @@
 							x,y,z = server.getPlayerLookDirection(peer_id)
 						</code>
 					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							-- Vehicle
+							vehicle_id = server.spawnVehicle(matrix, playlist_index, component_id)
+							vehicle_id = server.spawnVehicleSavefile(matrix, save_name)
+							server.despawnVehicle(vehicle_id, is_instant)
+							matrix = server.getVehiclePos(vehicle_id, voxel_x = 0, voxel_y = 0, voxel_z = 0)
+							name = server.getVehicleName(vehicle_id)
+							server.teleportVehicle(matrix, vehicle_id)
+							server.c1eanVehicles()
+							server.pressVehicleButton(vehicle_id, button_name)
+							server.getVehicleFireCount(vehicle_id)
+							server.setVehicleTooltip(vehicle_id, text)
+							is_simulating = server.getVehicleSimulating(vehicle_id)
+							server.setVehicleTransponder(vehicle_id, is_active)
+							server.setVehicleEditable(vehicle_id, is_editable)
+						</code>
+					</pre>
 				</div>
 			</div>
 		</div>
