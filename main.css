@@ -13,3 +13,11 @@ pre.pre-line {
 pre.pre-line code {
 	overflow-x : scroll;
 }
+
+/* --- リストに関するスタイル --- */
+ul.rect li {
+	list-style : none;
+}
+ul.rect li:before {
+	content : "■";
+}
