@@ -4,4 +4,4 @@ h1 {
 }
 
 /* --- コード表示に関するスタイル --- */
-pre.pre-line, pre.pre-line code { white-space : pre-line; }
+pre.pre-line, pre.pre-line code { tab-size : 0px; }
