@@ -79,14 +79,30 @@
 						</code>
 					</pre>
 					<p>
-						<code>onCustomCommand</code>は「?」から始まるチャットのメッセージを検出できる柔軟な関数です。
-					</p>
-					<p>
 						[編集メモ] moko256氏による検証によると、<code>onSpawnMissionObject</code>の第4引数はplaylist_nameではなくplaylist_indexで、ミッションプレイリストの中で何番目かを取得できるようです。しれっと修正してしまうとどちらが間違っていたのか分かりにくくなるため、一旦間違ったままリストに載せています。
 					</p>
 					<p>
 						[編集メモ] 上記の誤字ですが、v1.0.13でも直っていませんでした。ご注意ください。
 					</p>
+					<p>
+						<code>onCustomCommand</code>は「?」から始まるチャットのメッセージを検出できる柔軟な関数です。
+					</p>
+					<pre class="pre-line">
+						<code class="language-lua">
+							function onCustomCommand(full_message, user_peer_id, is_admin, is_auth, command, arg1, arg2, arg3, arg4)
+							  name = server.getPlayerName(user_peer_id)
+
+							  -- Adminのみがこのコマンドを利用できます
+							  if command == "?tp" and is_admin == true then
+							    server.teleportPlayer(user_peer_id, matrix.translation(arg1,arg2,arg3))
+							  end
+
+							  if command == "?hello" then
+							    server.announce("[Server]", "Hello " .. name)
+							  end
+							end
+						</code>
+					</pre>
 				</div>
 			</div>
 		</div>
