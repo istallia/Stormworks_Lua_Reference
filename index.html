@@ -13,7 +13,7 @@
 <div class="container">
 
 	<header class="row">
-		<h1 class="col">Stormworks(v1.0.4) Lua Reference</h1>
+		<h1 class="col">Stormworks(v1.0.13) Lua Reference</h1>
 	</header>
 
 	<div class="row">
@@ -58,7 +58,7 @@
 					<pre class="pre-line">
 						<code class="language-lua">
 							function onTick(game_ticks)
-							function onCreate()
+							function onCreate(is_world_create) -- ?reload_scriptsコマンド実行時にも呼び出されます
 							function onDestroy()
 							function onCustomCommand(full_message, user_peer_id, is_admin, is_auth, command, args ...)
 							function onChatMessage(sender_name, message)
@@ -83,6 +83,9 @@
 					</p>
 					<p>
 						[編集メモ] moko256氏による検証によると、<code>onSpawnMissionObject</code>の第4引数はplaylist_nameではなくplaylist_indexで、ミッションプレイリストの中で何番目かを取得できるようです。しれっと修正してしまうとどちらが間違っていたのか分かりにくくなるため、一旦間違ったままリストに載せています。
+					</p>
+					<p>
+						[編集メモ] 上記の誤字ですが、v1.0.13でも直っていませんでした。ご注意ください。
 					</p>
 				</div>
 			</div>
@@ -165,7 +168,6 @@
 							tutorial_completed = server.getTutorial()
 							ZONE_LIST = server.getZones(tag(s))
 							is_in_zone = server.isInZone(matrix, zone_name)
-							matrix = server.spawnMissionLocation(matrix, playlist_index, location_index)
 							server.spawnMissionObject(matrix, playlist_index, location_index, object_index)
 							server.despawnMissionObject(object_id, is_instant)
 							count = server.getPlaylistCount()
@@ -181,12 +183,15 @@
 					<pre class="pre-line">
 						<code class="language-lua">
 							-- Game
-							server.setGameSetting(setting_name, bool)
-							GAME_SETTINGS = server.getGameSettings()
-							server.setCurrency(amount)
-							amount = server.getCurrency()
+							server.setGameSetting(GAME_SETTING, value)
+							{ [GAME_SETTING] = value } = server.getGameSettings()
+							-- ゲーム設定にはインラインでアクセスできます: server.getGameSettings().third_person
+							server.setCurrency(money, research)
+							amount = server.getCurrency() -- 所持金の金額を取得
+							amount = server.getResearchPoints()
 							days_survived = server.getDateValue()
 							system_time = getTimeMillisec()
+							is_purchased = server.getTilePurchased(matrix)
 						</code>
 					</pre>
 					<pre class="pre-line">
@@ -206,6 +211,9 @@
 							server.removeAuth(peer_id)
 						</code>
 					</pre>
+					<p>
+						[編集メモ] v1.0.13にて、Adminの内容が途中で切れてしまっています。本ページではv1.0.4の状態のままにしておきます。
+					</p>
 				</div>
 			</div>
 		</div>
@@ -268,6 +276,95 @@
 							7 = network_info,
 							8 = chat_message,
 							9 = network_info_critical
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							PLAYER_LIST | {
+							  [peer_index] = {
+							    ["id"] = peer_id,
+							    ["name"] = name,
+							    ["admin"] = is_admin,
+							    ["auth"] = is_auth
+							  }
+							}
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							ZONE_LIST | {
+							  [zone_index] = {
+							    ["name"] = name,
+							    ["transform"] = matrix,
+							    ["size"] = {x, y, z},
+							    ["radius"] = radius,
+							    ["type"] = ZONE_TYPE,
+							    ["tags"] = {[i] = tag}
+							  }
+							}
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							ZONE_TYPE |
+							0 = box,
+							1 = sphere,
+							2 = radius
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							EQUIPMENT_ID |
+							0 = none,
+							1 = diving,
+							2 = firefighter,
+							3 = scuba,
+							4 = parachute,
+							5 = arctic,
+
+							6 = binoculars,
+							7 = cable,
+							8 = compass,
+							9 = defibrillator,
+							10 = fire_extinguisher,
+							11 = first_aid,
+							12 = flare,
+							13 = flaregun,
+							14 = flaregun_ammo,
+							15 = flashlight,
+							16 = hose,
+							17 = night_vision_binoculars,
+							18 = oxygen_mask,
+							19 = radio,
+							20 = radio_signal_locator,
+							21 = remote_control,
+							22 = rope,
+							23 = strobe_light,
+							24 = strobe_light_infrared,
+							25 = transponder,
+							26 = underwater_welding_torch,
+							27 = welding_torch
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							PLAYLIST_DATA | {
+							  ["name"] = name,
+							  ["path_id"] = folder_path,
+							  ["file_store"] = is_app_data,
+							  ["location_count"] = location_count
+							}
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							LOCATION_DATA | {
+							  ["name"] = name,
+							  ["tile"] = tile_filename,
+							  ["env_spawn_count"] = spawn_count,
+							  ["env_mod"] = is_env_mod,
+							  ["object_count"] = object_count
+							}
 						</code>
 					</pre>
 					<pre class="pre-line">
@@ -392,9 +489,9 @@
 							"player_damage",
 							"npc_damage",
 							"sharks",
-							"starting_currency",
 							"fast_travel",
 							"teleport_vehicle",
+							"starting_currency",
 							"rogue_mode",
 							"auto_refuel",
 							"megalodon",
@@ -402,7 +499,9 @@
 							"map_show_vehicles",
 							"show_3d_waypoints",
 							"show_name_plates",
-							"day_night_length",
+							"day_night_length", -- 現在書き込み不可
+							"sunrise", -- 現在書き込み不可
+							"sunset", -- 現在書き込み不可
 							"infinite_money",
 							"settings_menu",
 							"unlock_all_islands",
@@ -412,12 +511,13 @@
 							"no_clip",
 							"map_teleport",
 							"cleanup_vehicle",
-							"clear_fow",
+							"clear_fow", -- clear fog of war
 							"vehicle_spawning",
 							"photo_mode",
 							"respawning",
 							"settings_menu_lock",
-							"despawn_on_leave"
+							"despawn_on_leave",
+							"unlock_all_components"
 						</code>
 					</pre>
 				</div>
@@ -519,6 +619,9 @@
 					<p>
 						このページはゲーム内の公式Luaガイドを元に和訳し、ついでに「こんな情報もあったらいいな」を追記していく感じのページです。  
 						そんな方はいないとは思いますが、<a href="https://github.com/istallia/Stormworks_Lua_Reference">GitHub</a>でホストしてるので、gitできる方は手伝ってくださるとありがたいです。(とりあえずは英文丸写しでもOKです)
+					</p>
+					<p>
+						ページ先頭にバージョンを記載しています。最新の情報が必要な場合はゲーム内リファレンス(英語)を参照してください。
 					</p>
 					<p>
 						使用したもの...<br>
