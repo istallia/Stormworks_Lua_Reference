@@ -22,3 +22,6 @@ ul.rect li {
 ul.rect li:before {
 	content : "■";
 }
+ul.collection.with-header li.collection-header, ul.collection.with-header li.collection-item {
+	padding : 5px 10px;
+}

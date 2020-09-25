@@ -36,13 +36,35 @@
 				<div class="card-content">
 					<span class="card-title">Contents</span>
 					<ul class="collection with-header">
-						<li class="collection-item"><a href="#callback-functions">Callback Functions</a></li>
-						<li class="collection-item"><a href="#server-functions">Server Functions</a></li>
-						<li class="collection-item"><a href="#types-and-info">Types and Info</a></li>
-						<li class="collection-item"><a href="#matrix-manipulation">Matrix Manipulation</a></li>
-						<li class="collection-item"><a href="#lua-functions">Lua Functions</a></li>
-						<li class="collection-item"><a href="#meta-from-the-devs">Meta from the Devs</a></li>
-						<li class="collection-item"><a href="#about-this-page">About This Page</a></li>
+						<a href="#callback-functions" class="green-text"><li class="collection-header">Callback Functions</li></a>
+						<a href="#server-functions" class="green-text"><li class="collection-header">Server Functions</li></a>
+						<a href="#server-functions-ui"><li class="collection-item">UI</li></a>
+						<a href="#server-functions-player"><li class="collection-item">Player</li></a>
+						<a href="#server-functions-vehicle"><li class="collection-item">Vehicle</li></a>
+						<a href="#server-functions-mission"><li class="collection-item">Mission</li></a>
+						<a href="#server-functions-game"><li class="collection-item">Game</li></a>
+						<a href="#server-functions-http"><li class="collection-item">Http</li></a>
+						<a href="#server-functions-admin"><li class="collection-item">Admin</li></a>
+						<a href="#server-functions-spawn-location"><li class="collection-item">Spawn Location Example</li></a>
+						<a href="#types-and-info" class="green-text"><li class="collection-header">Types and Info</li></a>
+						<a href="#types-and-info-POSITION_TYPE"><li class="collection-item">POSITION_TYPE</li></a>
+						<a href="#types-and-info-MARKER_TYPE"><li class="collection-item">MARKER_TYPE</li></a>
+						<a href="#types-and-info-LABEL_TYPE"><li class="collection-item">LABEL_TYPE</li></a>
+						<a href="#types-and-info-NOTIFICATION_TYPE"><li class="collection-item">NOTIFICATION_TYPE</li></a>
+						<a href="#types-and-info-PLAYER_LIST"><li class="collection-item">PLAYER_LIST</li></a>
+						<a href="#types-and-info-ZONE_LIST"><li class="collection-item">ZONE_LIST</li></a>
+						<a href="#types-and-info-ZONE_TYPE"><li class="collection-item">ZONE_TYPE</li></a>
+						<a href="#types-and-info-EQUIPMENT_ID"><li class="collection-item">EQUIPMENT_ID</li></a>
+						<a href="#types-and-info-PLAYLIST_DATA"><li class="collection-item">PLAYLIST_DATA</li></a>
+						<a href="#types-and-info-LOCATION_DATA"><li class="collection-item">LOCATION_DATA</li></a>
+						<a href="#types-and-info-OBJECT_DATA"><li class="collection-item">OBJECT_DATA</li></a>
+						<a href="#types-and-info-OBJECT_TYPE"><li class="collection-item">OBJECT_TYPE</li></a>
+						<a href="#types-and-info-OUTFIT_TYPE"><li class="collection-item">OUTFIT_TYPE</li></a>
+						<a href="#types-and-info-GAME_SETTINGS"><li class="collection-item">GAME_SETTINGS</li></a>
+						<a href="#matrix-manipulation" class="green-text"><li class="collection-header">Matrix Manipulation</li></a>
+						<a href="#lua-functions" class="green-text"><li class="collection-header">Lua Functions</li></a>
+						<a href="#meta-from-the-devs" class="green-text"><li class="collection-header">Meta from the Devs</li></a>
+						<a href="#about-this-page" class="green-text"><li class="collection-header">About This Page</li></a>
 					</ul>
 				</div>
 			</div>
@@ -79,14 +101,30 @@
 						</code>
 					</pre>
 					<p>
-						<code>onCustomCommand</code>は「?」から始まるチャットのメッセージを検出できる柔軟な関数です。
-					</p>
-					<p>
 						[編集メモ] moko256氏による検証によると、<code>onSpawnMissionObject</code>の第4引数はplaylist_nameではなくplaylist_indexで、ミッションプレイリストの中で何番目かを取得できるようです。しれっと修正してしまうとどちらが間違っていたのか分かりにくくなるため、一旦間違ったままリストに載せています。
 					</p>
 					<p>
 						[編集メモ] 上記の誤字ですが、v1.0.13でも直っていませんでした。ご注意ください。
 					</p>
+					<p>
+						<code>onCustomCommand</code>は「?」から始まるチャットのメッセージを検出できる柔軟な関数です。
+					</p>
+					<pre class="pre-line">
+						<code class="language-lua">
+							function onCustomCommand(full_message, user_peer_id, is_admin, is_auth, command, arg1, arg2, arg3, arg4)
+							  name = server.getPlayerName(user_peer_id)
+
+							  -- Adminのみがこのコマンドを利用できます
+							  if command == "?tp" and is_admin == true then
+							    server.teleportPlayer(user_peer_id, matrix.translation(arg1,arg2,arg3))
+							  end
+
+							  if command == "?hello" then
+							    server.announce("[Server]", "Hello " .. name)
+							  end
+							end
+						</code>
+					</pre>
 				</div>
 			</div>
 		</div>
@@ -97,7 +135,7 @@
 					<p>
 						以下のいくつかの関数はすべて大文字の引数を含みます。それらの変数の説明は後述します。
 					</p>
-					<pre class="pre-line">
+					<pre class="pre-line" id="server-functions-ui">
 						<code class="language-lua">
 							-- UI
 							server.announce(name, message)
@@ -116,7 +154,7 @@
 							server.createPopup(peer_id, ui_id)
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="server-functions-player">
 						<code class="language-lua">
 							-- Player
 							name = server.getPlayerName(peer_id)
@@ -128,7 +166,7 @@
 							x,y,z = server.getPlayerLookDirection(peer_id)
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="server-functions-vehicle">
 						<code class="language-lua">
 							-- Vehicle
 							vehicle_id = server.spawnVehicle(matrix, playlist_index, component_id)
@@ -146,7 +184,7 @@
 							server.setVehicleEditable(vehicle_id, is_editable)
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="server-functions-mission">
 						<code class="language-lua">
 							-- Mission
 							playlist_index = server.getPlaylistIndexByName(name)
@@ -180,7 +218,7 @@
 							is_in_area = server.isInTransformArea(matrix_object, matrix_zone, zone_x, zone_y, zone_z)
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="server-functions-game">
 						<code class="language-lua">
 							-- Game
 							server.setGameSetting(GAME_SETTING, value)
@@ -194,13 +232,13 @@
 							is_purchased = server.getTilePurchased(matrix)
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="server-functions-http">
 						<code class="language-lua">
 							-- Http
 							server.httpGet(port, request)
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="server-functions-admin">
 						<code class="language-lua">
 							-- Admin
 							server.banPlayer(peer_id)
@@ -214,6 +252,36 @@
 					<p>
 						[編集メモ] v1.0.13にて、Adminの内容が途中で切れてしまっています。本ページではv1.0.4の状態のままにしておきます。
 					</p>
+					<p id="server-functions-spawn-location">
+						以下のスクリプトはどのようにしてプレイリスト(Lua)からミッションロケーションをスポーンさせればよいのかのサンプルです。
+					</p>
+					<pre class="pre-line">
+						<code class="language-lua">
+							spawned_mission_objects = {}
+
+							function onCustomCommand(full_message, user_peer_id, is_admin, is_auth, command, arg1, arg2, arg3, arg4)
+							  --example use: ?spawnLocation my_boat 50 15 1000
+							  --example use: ?spawnLocation my_mission 0 0 0
+							  if command == "?spawnLocation" and is_admin == true then
+							    local playlist_index = server.getPlaylistIndexCurrent()
+							    server.spawnMissionLocation(matrix.translation(arg2,arg3,arg4), playlist_index, server.getLocationIndexByName(playlist_index,arg1))
+							    -- 例えばロケーションで港を選択し、そこに配置した物をスポーンさせようとすると以下のように書ける
+							    -- server.spawnMissionLocation(matrix.translation(0,0,0), playlist_index, server.getLocationIndexByName(playlist_index,"TERMINAL SPYCAKES"))
+							  end
+
+							  if command == "?despawn" and is_admin == true then
+							    for id, object in pairs(spawned_mission_objects) do
+							      if object["type"] == "vehicle" then
+							        server.despawnVehicle(id, true)
+							      else
+							        server.despawnMissionObject(id, true)
+							      end
+							      -- [メモ] ここのtrueをfalseに変えると、即座にデスポーンではなくプレイヤーが離れたときにデスポーンするようになる
+							    end
+							  end
+							end
+						</code>
+					</pre>
 				</div>
 			</div>
 		</div>
@@ -221,7 +289,7 @@
 			<div class="card">
 				<div class="card-content" id="types-and-info">
 					<span class="card-title">Types and Info</span>
-					<pre class="pre-line">
+					<pre class="pre-line" id="types-and-info-POSITION_TYPE">
 						<code class="language-lua">
 							POSITION_TYPE |
 							0 = fixed,
@@ -229,7 +297,7 @@
 							2 = object
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="types-and-info-MARKER_TYPE">
 						<code class="language-lua">
 							MARKER_TYPE |
 							0 = delivery_target,
@@ -243,7 +311,7 @@
 							8 = search_radius
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="types-and-info-LABEL_TYPE">
 						<code class="language-lua">
 							LABEL_TYPE |
 							0 = none,
@@ -263,7 +331,7 @@
 							14 = fuel_sell
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="types-and-info-NOTIFICATION_TYPE">
 						<code class="language-lua">
 							NOTIFICATION_TYPE |
 							0 = new_mission,
@@ -278,7 +346,7 @@
 							9 = network_info_critical
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="types-and-info-PLAYER_LIST">
 						<code class="language-lua">
 							PLAYER_LIST | {
 							  [peer_index] = {
@@ -290,7 +358,7 @@
 							}
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="types-and-info-ZONE_LIST">
 						<code class="language-lua">
 							ZONE_LIST | {
 							  [zone_index] = {
@@ -304,7 +372,7 @@
 							}
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="types-and-info-ZONE_TYPE">
 						<code class="language-lua">
 							ZONE_TYPE |
 							0 = box,
@@ -312,7 +380,7 @@
 							2 = radius
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="types-and-info-EQUIPMENT_ID">
 						<code class="language-lua">
 							EQUIPMENT_ID |
 							0 = none,
@@ -346,7 +414,7 @@
 							27 = welding_torch
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="types-and-info-PLAYLIST_DATA">
 						<code class="language-lua">
 							PLAYLIST_DATA | {
 							  ["name"] = name,
@@ -356,7 +424,7 @@
 							}
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="types-and-info-LOCATION_DATA">
 						<code class="language-lua">
 							LOCATION_DATA | {
 							  ["name"] = name,
@@ -367,7 +435,7 @@
 							}
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="types-and-info-OBJECT_DATA">
 						<code class="language-lua">
 							OBJECT_DATA | {
 							  ["name"] = name,
@@ -394,7 +462,7 @@
 							"cargo_zone"
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="types-and-info-OBJECT_TYPE">
 						<code class="language-lua">
 							OBJECT_TYPE |
 							0 = none,
@@ -463,7 +531,7 @@
 							63 = big_flare
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="types-and-info-OUTFIT_TYPE">
 						<code class="language-lua">
 							OUTFIT_TYPE |
 							0 = none,
@@ -480,7 +548,7 @@
 							11 = civilian
 						</code>
 					</pre>
-					<pre class="pre-line">
+					<pre class="pre-line" id="types-and-info-GAME_SETTINGS">
 						<code class="language-lua">
 							GAME_SETTINGS |
 							"third_person",
