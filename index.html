@@ -168,7 +168,6 @@
 							tutorial_completed = server.getTutorial()
 							ZONE_LIST = server.getZones(tag(s))
 							is_in_zone = server.isInZone(matrix, zone_name)
-							matrix = server.spawnMissionLocation(matrix, playlist_index, location_index)
 							server.spawnMissionObject(matrix, playlist_index, location_index, object_index)
 							server.despawnMissionObject(object_id, is_instant)
 							count = server.getPlaylistCount()
