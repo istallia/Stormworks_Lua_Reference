@@ -286,7 +286,21 @@
 							    ["name"] = name,
 							    ["admin"] = is_admin,
 							    ["auth"] = is_auth
-								}
+							  }
+							}
+						</code>
+					</pre>
+					<pre class="pre-line">
+						<code class="language-lua">
+							ZONE_LIST | {
+							  [zone_index] = {
+							    ["name"] = name,
+							    ["transform"] = matrix,
+							    ["size"] = {x, y, z},
+							    ["radius"] = radius,
+							    ["type"] = ZONE_TYPE,
+							    ["tags"] = {[i] = tag}
+							  }
 							}
 						</code>
 					</pre>
