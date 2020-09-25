@@ -230,6 +230,36 @@
 					<p>
 						[編集メモ] v1.0.13にて、Adminの内容が途中で切れてしまっています。本ページではv1.0.4の状態のままにしておきます。
 					</p>
+					<p>
+						以下のスクリプトはどのようにしてプレイリスト(Lua)からミッションロケーションをスポーンさせればよいのかのサンプルです。
+					</p>
+					<pre class="pre-line">
+						<code class="language-lua">
+							spawned_mission_objects = {}
+
+							function onCustomCommand(full_message, user_peer_id, is_admin, is_auth, command, arg1, arg2, arg3, arg4)
+							  --example use: ?spawnLocation my_boat 50 15 1000
+							  --example use: ?spawnLocation my_mission 0 0 0
+							  if command == "?spawnLocation" and is_admin == true then
+							    local playlist_index = server.getPlaylistIndexCurrent()
+							    server.spawnMissionLocation(matrix.translation(arg2,arg3,arg4), playlist_index, server.getLocationIndexByName(playlist_index,arg1))
+							    -- 例えばロケーションで港を選択し、そこに配置した物をスポーンさせようとすると以下のように書ける
+							    -- server.spawnMissionLocation(matrix.translation(0,0,0), playlist_index, server.getLocationIndexByName(playlist_index,"TERMINAL SPYCAKES"))
+							  end
+
+							  if command == "?despawn" and is_admin == true then
+							    for id, object in pairs(spawned_mission_objects) do
+							      if object["type"] == "vehicle" then
+							        server.despawnVehicle(id, true)
+							      else
+							        server.despawnMissionObject(id, true)
+							      end
+							      -- [メモ] ここのtrueをfalseに変えると、即座にデスポーンではなくプレイヤーが離れたときにデスポーンするようになる
+							    end
+							  end
+							end
+						</code>
+					</pre>
 				</div>
 			</div>
 		</div>
