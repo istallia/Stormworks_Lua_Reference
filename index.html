@@ -79,7 +79,7 @@
 					</p>
 					<pre class="pre-line">
 						<code class="language-lua">
-							function onTick(game_ticks)
+							function onTick(delta_worldtime)
 							function onCreate(is_world_create) -- ?reload_scriptsコマンド実行時にも呼び出されます
 							function onDestroy()
 							function onCustomCommand(full_message, user_peer_id, is_admin, is_auth, command, args ...)
@@ -105,6 +105,10 @@
 					</p>
 					<p>
 						[編集メモ] 上記の誤字ですが、v1.0.13でも直っていませんでした。ご注意ください。
+					</p>
+					<p>
+						[編集メモ] onTick関数の引数<code>game_ticks</code>は前回onTickが実行されてからのtick数を表します。基本的に1ですが、ベッドで寝たりするともっと大きくなるのかな……？<br>
+						本ページでは公式のミッションLuaに基づき、引数名を<code>delta_worldtime</code>に変更しています。
 					</p>
 					<p>
 						<code>onCustomCommand</code>は「?」から始まるチャットのメッセージを検出できる柔軟な関数です。
