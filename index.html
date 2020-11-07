@@ -58,6 +58,7 @@
 				<div class="card-content">
 					<span class="card-title">Contents</span>
 					<ul class="collection with-header">
+						<a href="#api-general-info" class="green-text"><li class="collection-header">API General Info</li></a>
 						<a href="#callback-functions" class="green-text"><li class="collection-header">Callback Functions</li></a>
 						<a href="#server-functions" class="green-text"><li class="collection-header">Server Functions</li></a>
 						<a href="#server-functions-ui"><li class="collection-item">UI</li></a>
@@ -87,6 +88,22 @@
 						<a href="#lua-functions" class="green-text"><li class="collection-header">Lua Functions</li></a>
 						<a href="#meta-from-the-devs" class="green-text"><li class="collection-header">Meta from the Devs</li></a>
 						<a href="#about-this-page" class="green-text"><li class="collection-header">About This Page</li></a>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col m12">
+			<div class="card">
+				<div class="card-content" id="api-general-info">
+					<span class="card-title">API General Info</span>
+					<ul class="rect">
+						<li>Peer IDはプレイヤーリストの左側で確認できる</li>
+						<li>Y座標は高さを表します(そのためマップ上の座標はxとz)</li>
+						<li><code>peer_id</code>に-1を渡すと全員を指定できる</li>
+						<li><code>g_savedata</code>テーブルに入れた変数はセーブデータ毎に保存される</li>
+						<li>ワールド生成時に1度だけ実行したい場合は<code>onCreate()</code>の<code>is_world_create</code>がtrueのときに実行すれば良い</li>
+						<li><code>onCreate()</code>内で<code>server.announce()</code>を使うとワールド生成/接続前に送信されるため、メッセージを受け取れない</li>
+						<li>Luaの配列は添字が1からなので注意</li>
 					</ul>
 				</div>
 			</div>
