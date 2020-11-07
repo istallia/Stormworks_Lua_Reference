@@ -118,7 +118,7 @@
 					</p>
 					<pre class="pre-line">
 						<code class="language-lua">
-							function onTick(delta_worldtime)
+							function onTick(delta_worldtime) -- delta_worldtimeは1フレームに経過したtick数です。通常は1ですが、寝ている間は400になります
 							function onCreate(is_world_create) -- ?reload_scriptsコマンド実行時にも呼び出されます
 							function onDestroy()
 							function onCustomCommand(full_message, user_peer_id, is_admin, is_auth, command, args ...)
@@ -133,21 +133,15 @@
 							function onVehicleLoad(vehicle_id)
 							function onVehicleTeleport(vehicle_id, peer_id, x, y, z)
 							function onVehicleDespawn(vehicle_id, peer_id)
-							function onSpawnMissionObject(object_id, name, OBJECT_TYPE, playlist_name)
+							function onSpawnMissionObject(object_id, name, OBJECT_TYPE, playlist_index)
 							function onVehicleDamaged(vehicle_id, damage)
 							function httpReply(port, request, reply)
 							function onFireExtinguished(x, y, z)
 						</code>
 					</pre>
 					<p>
-						[編集メモ] moko256氏による検証によると、<code>onSpawnMissionObject</code>の第4引数はplaylist_nameではなくplaylist_indexで、ミッションプレイリストの中で何番目かを取得できるようです。しれっと修正してしまうとどちらが間違っていたのか分かりにくくなるため、一旦間違ったままリストに載せています。
-					</p>
-					<p>
-						[編集メモ] 上記の誤字ですが、v1.0.13でも直っていませんでした。ご注意ください。
-					</p>
-					<p>
-						[編集メモ] onTick関数の引数<code>game_ticks</code>は前回onTickが実行されてからのtick数を表します。基本的に1ですが、ベッドで寝たりするともっと大きくなるのかな……？<br>
-						本ページでは公式のミッションLuaに基づき、引数名を<code>delta_worldtime</code>に変更しています。
+						[編集メモ] moko256氏による検証によると、<code>onSpawnMissionObject</code>の第4引数はplaylist_nameではなくplaylist_indexで、ミッションプレイリストの中で何番目かを取得できるようです。しれっと修正してしまうとどちらが間違っていたのか分かりにくくなるため、一旦間違ったままリストに載せています。<br>
+						→ v1.0.20時点では修正されていましたのでリストに反映しました。<code>delta_worldtime</code>についてはこちらのほうが分かりやすいため、このままにします。
 					</p>
 					<p>
 						<code>onCustomCommand</code>は「?」から始まるチャットのメッセージを検出できる柔軟な関数です。
