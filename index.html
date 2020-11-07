@@ -19,6 +19,28 @@
 	<div class="row">
 		<div class="col m12">
 			<div class="card">
+				<div class="card-content" id="default-game-commands">
+					<span class="card-title">Default Game Commands</span>
+					<p>
+						以下のコマンドはゲーム中いつでも呼び出せます。
+					</p>
+					<pre class="pre-line">
+						<code class="language-lua">
+							?reload_scripts -- オートセーブ後すべてのスクリプトとロケーションを再読み込みする
+							?kick &lt;peer_id&gt;
+							?ban &lt;peer_id&gt;
+							?add_admin &lt;peer_id&gt; -- そのプレイヤーがコマンドやカスタムメニューにアクセスできるように権限を与える
+							?remove_admin &lt;peer_id&gt;
+							?add_auth &lt;peer_id&gt; -- そのプレイヤーがワークベンチを使えるように権限を与える
+							?remove_auth &lt;peer_id&gt;
+							?save &lt;save_name&gt; -- 強制的にセーブさせる(セーブ名を省略するとオートセーブのデータに上書き)
+						</code>
+					</pre>
+				</div>
+			</div>
+		</div>
+		<div class="col m12">
+			<div class="card">
 				<div class="card-content" id="lua-scripting-overview">
 					<span class="card-title">Lua Scripting Overview</span>
 					<p>
