@@ -4,6 +4,11 @@ h1 {
 }
 
 /* --- コード表示に関するスタイル --- */
+@font-face {
+	font-family: 'SourceHanCodeJP';
+	src: url('SourceHanCodeJP.woff2') format('woff2'),
+	     url('SourceHanCodeJP.woff') format('woff');
+}
 pre.pre-line, pre.pre-line code {
 	tab-size : 0px;
 }
@@ -11,9 +16,10 @@ pre.pre-line {
 	max-width : 70vw;
 }
 pre.pre-line code {
-	overflow-x : scroll;
+	overflow-x  : scroll;
+	font-family : 'SourceHanCodeJP', Consolas, Menlo, 'Liberation Mono', Courier, monospace;
 }
-code { font-family : Consolas, Menlo, 'Liberation Mono', Courier, monospace; }
+code { font-family : 'SourceHanCodeJP', Consolas, Menlo, 'Liberation Mono', Courier, monospace; }
 
 /* --- リストに関するスタイル --- */
 ul.rect li {
