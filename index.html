@@ -129,12 +129,12 @@
 							function onPlayerLeave(steam_id, name, peer_id, is_admin, is_auth)
 							function onToggleMap(peer_id, is_open)
 							function onPlayerDie(steam_id, name, peer_id, is_admin, is_auth)
-							function onVehicleSpawn(vehicle_id, peer_id, x, y, z)
+							function onVehicleSpawn(vehicle_id, peer_id, x, y, z) -- スクリプトでスポーンしたビークルのpeer_idは-1です
 							function onVehicleLoad(vehicle_id)
 							function onVehicleTeleport(vehicle_id, peer_id, x, y, z)
 							function onVehicleDespawn(vehicle_id, peer_id)
-							function onSpawnMissionObject(object_id, name, OBJECT_TYPE, playlist_index)
-							function onVehicleDamaged(vehicle_id, damage)
+							function onSpawnMissionObject(object_id, name, OBJECT_TYPE, playlist_index) -- スクリプトでスポーンしたオブジェクトやビークルすべてで呼び出されます
+							function onVehicleDamaged(vehicle_id, damage) -- 修理時はダメージ値が負の値で呼び出されます
 							function httpReply(port, request, reply)
 							function onFireExtinguished(x, y, z)
 						</code>
