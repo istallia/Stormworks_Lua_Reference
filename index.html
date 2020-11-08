@@ -68,6 +68,7 @@
 						<a href="#server-functions-game"><li class="collection-item">Game</li></a>
 						<a href="#server-functions-http"><li class="collection-item">Http</li></a>
 						<a href="#server-functions-admin"><li class="collection-item">Admin</li></a>
+						<a href="#server-functions-misc"><li class="collection-item">Misc</li></a>
 						<a href="#server-functions-spawn-location"><li class="collection-item">Spawn Location Example</li></a>
 						<a href="#types-and-info" class="green-text"><li class="collection-header">Types and Info</li></a>
 						<a href="#types-and-info-POSITION_TYPE"><li class="collection-item">POSITION_TYPE</li></a>
@@ -175,8 +176,7 @@
 					<pre class="pre-line" id="server-functions-ui">
 						<code class="language-lua">
 							-- UI
-							server.announce(name, message)
-							server.whisper(peer_id, message)
+							server.announce(name, message[, peer_id]) -- peer_id省略時の値は-1(全員に送信)です
 							server.notify(peer_id, title, message, NOTIFICATION_TYPE)
 							ui_id = ui.getMapID()
 							server.removeMapID(peer_id, ui_id)
@@ -186,7 +186,7 @@
 							server.removeMapLabel(peer_id, ui_id)
 							server.addMapLine(peer_id, ui_id, start_matrix, end_matrix, width)
 							server.removeMapLine(peer_id, ui_id)
-							server.setPopup(peer_id, ui_id, name, is_show, text, x, y, z, is_worldspace, render_distance)
+							server.setPopup(peer_id, ui_id, name, is_show, text, x, y, z, is_worldspace, render_distance) -- is_worldspaceがfalseの場合、ポップアップは画面上の指定位置で表示されます(yの値は無視されます)
 							server.removePopup(peer_id, ui_id)
 							server.createPopup(peer_id, ui_id)
 						</code>
@@ -226,22 +226,24 @@
 							-- Mission
 							playlist_index = server.getPlaylistIndexByName(name)
 							playlist_index = server.getPlaylistIndexCurrent()
-							location_index = server.spawnMissionLocation(matrix, playlist_index, location_index)
-							-- 0,0,0 matrix will spawn at random location, otherwise this is a world position
+							location_index = server.getLocationIndexByName(playlist_index, name)
+							server.spawnThisPlaylistMissionLocation(name)
+							matrix = server.spawnMissionLocation(matrix, playlist_index, location_index)
+							-- 0,0,0のmatrixを指定すると(タイルの種類が同じ)ランダムな場所にスポーンします。それ以外を指定するとそのワールド座標にスポーンします
 
 							path = server.getPlaylistPath(playlist_name, is_rom)
 							server.spawnObject(matrix, OBJECT_TYPE)
 							is_found, matrix = server.getObjectPos(object_id)
 							object_id = server.spawnFire(matrix, size, magnitude, is_lit, is_initialzied, is_explosive, parent_vehicle_id, explosion_point, explosion_magnitude)
-							server.despawnObject(object_id, is_instant)
 							object_id = server.spawnCharacter(matrix, (outfit_id))
 							object_id = server.spawnAnimal(matrix, animal_type, scale)
+							server.despawnObject(object_id, is_instant)
 							server.despawnCharacter(object_id, is_instant)
 							hp, matrix = server.getCharacterData(object_id)
 							server.setCharacterData(object_id, hp, is_interactable)
 							server.setCharacterItem(object_id, slot, EQUIPMENT_ID, is_active)
-							tutorial_completed = server.getTutorial()
-							ZONE_LIST = server.getZones(tag(s))
+							ZONE_LIST = server.getZones() -- すべての環境MODのゾーンのリストを返す
+							ZONE_LIST = server.getZones(tag(s)) -- すべてのゾーンの中でタグにマッチするもののリストを返す
 							is_in_zone = server.isInZone(matrix, zone_name)
 							server.spawnMissionObject(matrix, playlist_index, location_index, object_index)
 							server.despawnMissionObject(object_id, is_instant)
@@ -251,7 +253,7 @@
 							OBJECT_DATA = server.getLocationObjectData(playlist_index, location_index, object_index)
 							server.setFireData(object_id, is_lit, is_explosive)
 							is_lit = server.getFireData(object_id)
-							matrix = server.getOceanTransform(matrix, min_search_range, max_search_range)
+							is_found, matrix = server.getOceanTransform(matrix, min_search_range, max_search_range) -- 指定範囲内のランダムな海のタイルのワールド座標を返す
 							is_in_area = server.isInTransformArea(matrix_object, matrix_zone, zone_x, zone_y, zone_z)
 						</code>
 					</pre>
@@ -286,9 +288,13 @@
 							server.removeAuth(peer_id)
 						</code>
 					</pre>
-					<p>
-						[編集メモ] v1.0.13にて、Adminの内容が途中で切れてしまっています。本ページではv1.0.4の状態のままにしておきます。
-					</p>
+					<pre class="pre-line" id="server-functions-misc">
+						<code class="language-lua">
+							-- Misc
+							tutorial_completed = server.getTutorial() - チュートリアル中かを取得できます
+							server.setTutorial() -- チュートリアルをアクティブにするかを設定できます(独自のチュートリアルを作るのに便利です)
+						</code>
+					</pre>
 					<p id="server-functions-spawn-location">
 						以下のスクリプトはどのようにしてプレイリスト(Lua)からミッションロケーションをスポーンさせればよいのかのサンプルです。
 					</p>
