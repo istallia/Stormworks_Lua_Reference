@@ -13,10 +13,32 @@
 <div class="container">
 
 	<header class="row">
-		<h1 class="col">Stormworks(v1.0.13) Lua Reference</h1>
+		<h1 class="col">Stormworks(v1.0.20) Lua Reference</h1>
 	</header>
 
 	<div class="row">
+		<div class="col m12">
+			<div class="card">
+				<div class="card-content" id="default-game-commands">
+					<span class="card-title">Default Game Commands</span>
+					<p>
+						以下のコマンドはゲーム中いつでも呼び出せます。
+					</p>
+					<pre class="pre-line">
+						<code class="language-lua">
+							?reload_scripts -- オートセーブ後すべてのスクリプトとロケーションを再読み込みする
+							?kick &lt;peer_id&gt;
+							?ban &lt;peer_id&gt;
+							?add_admin &lt;peer_id&gt; -- そのプレイヤーがコマンドやカスタムメニューにアクセスできるように権限を与える
+							?remove_admin &lt;peer_id&gt;
+							?add_auth &lt;peer_id&gt; -- そのプレイヤーがワークベンチを使えるように権限を与える
+							?remove_auth &lt;peer_id&gt;
+							?save &lt;save_name&gt; -- 強制的にセーブさせる(セーブ名を省略するとオートセーブのデータに上書き)
+						</code>
+					</pre>
+				</div>
+			</div>
+		</div>
 		<div class="col m12">
 			<div class="card">
 				<div class="card-content" id="lua-scripting-overview">
@@ -36,6 +58,7 @@
 				<div class="card-content">
 					<span class="card-title">Contents</span>
 					<ul class="collection with-header">
+						<a href="#api-general-info" class="green-text"><li class="collection-header">API General Info</li></a>
 						<a href="#callback-functions" class="green-text"><li class="collection-header">Callback Functions</li></a>
 						<a href="#server-functions" class="green-text"><li class="collection-header">Server Functions</li></a>
 						<a href="#server-functions-ui"><li class="collection-item">UI</li></a>
@@ -45,6 +68,7 @@
 						<a href="#server-functions-game"><li class="collection-item">Game</li></a>
 						<a href="#server-functions-http"><li class="collection-item">Http</li></a>
 						<a href="#server-functions-admin"><li class="collection-item">Admin</li></a>
+						<a href="#server-functions-misc"><li class="collection-item">Misc</li></a>
 						<a href="#server-functions-spawn-location"><li class="collection-item">Spawn Location Example</li></a>
 						<a href="#types-and-info" class="green-text"><li class="collection-header">Types and Info</li></a>
 						<a href="#types-and-info-POSITION_TYPE"><li class="collection-item">POSITION_TYPE</li></a>
@@ -71,6 +95,22 @@
 		</div>
 		<div class="col m12">
 			<div class="card">
+				<div class="card-content" id="api-general-info">
+					<span class="card-title">API General Info</span>
+					<ul class="rect">
+						<li>Peer IDはプレイヤーリストの左側で確認できる</li>
+						<li>Y座標は高さを表します(そのためマップ上の座標はxとz)</li>
+						<li><code>peer_id</code>に-1を渡すと全員を指定できる</li>
+						<li><code>g_savedata</code>テーブルに入れた変数はセーブデータ毎に保存される</li>
+						<li>ワールド生成時に1度だけ実行したい場合は<code>onCreate()</code>の<code>is_world_create</code>がtrueのときに実行すれば良い</li>
+						<li><code>onCreate()</code>内で<code>server.announce()</code>を使うとワールド生成/接続前に送信されるため、メッセージを受け取れない</li>
+						<li>Luaの配列は添字が1からなので注意</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col m12">
+			<div class="card">
 				<div class="card-content" id="callback-functions">
 					<span class="card-title">Callback Functions</span>
 					<p>
@@ -79,7 +119,7 @@
 					</p>
 					<pre class="pre-line">
 						<code class="language-lua">
-							function onTick(delta_worldtime)
+							function onTick(delta_worldtime) -- delta_worldtimeは1フレームに経過したtick数です。通常は1ですが、寝ている間は400になります
 							function onCreate(is_world_create) -- ?reload_scriptsコマンド実行時にも呼び出されます
 							function onDestroy()
 							function onCustomCommand(full_message, user_peer_id, is_admin, is_auth, command, args ...)
@@ -90,25 +130,19 @@
 							function onPlayerLeave(steam_id, name, peer_id, is_admin, is_auth)
 							function onToggleMap(peer_id, is_open)
 							function onPlayerDie(steam_id, name, peer_id, is_admin, is_auth)
-							function onVehicleSpawn(vehicle_id, peer_id, x, y, z)
+							function onVehicleSpawn(vehicle_id, peer_id, x, y, z) -- スクリプトでスポーンしたビークルのpeer_idは-1です
 							function onVehicleLoad(vehicle_id)
 							function onVehicleTeleport(vehicle_id, peer_id, x, y, z)
 							function onVehicleDespawn(vehicle_id, peer_id)
-							function onSpawnMissionObject(object_id, name, OBJECT_TYPE, playlist_name)
-							function onVehicleDamaged(vehicle_id, damage)
+							function onSpawnMissionObject(object_id, name, OBJECT_TYPE, playlist_index) -- スクリプトでスポーンしたオブジェクトやビークルすべてで呼び出されます
+							function onVehicleDamaged(vehicle_id, damage) -- 修理時はダメージ値が負の値で呼び出されます
 							function httpReply(port, request, reply)
 							function onFireExtinguished(x, y, z)
 						</code>
 					</pre>
 					<p>
-						[編集メモ] moko256氏による検証によると、<code>onSpawnMissionObject</code>の第4引数はplaylist_nameではなくplaylist_indexで、ミッションプレイリストの中で何番目かを取得できるようです。しれっと修正してしまうとどちらが間違っていたのか分かりにくくなるため、一旦間違ったままリストに載せています。
-					</p>
-					<p>
-						[編集メモ] 上記の誤字ですが、v1.0.13でも直っていませんでした。ご注意ください。
-					</p>
-					<p>
-						[編集メモ] onTick関数の引数<code>game_ticks</code>は前回onTickが実行されてからのtick数を表します。基本的に1ですが、ベッドで寝たりするともっと大きくなるのかな……？<br>
-						本ページでは公式のミッションLuaに基づき、引数名を<code>delta_worldtime</code>に変更しています。
+						[編集メモ] moko256氏による検証によると、<code>onSpawnMissionObject</code>の第4引数はplaylist_nameではなくplaylist_indexで、ミッションプレイリストの中で何番目かを取得できるようです。しれっと修正してしまうとどちらが間違っていたのか分かりにくくなるため、一旦間違ったままリストに載せています。<br>
+						→ v1.0.20時点では修正されていましたのでリストに反映しました。<code>delta_worldtime</code>についてはこちらのほうが分かりやすいため、このままにします。
 					</p>
 					<p>
 						<code>onCustomCommand</code>は「?」から始まるチャットのメッセージを検出できる柔軟な関数です。
@@ -142,8 +176,7 @@
 					<pre class="pre-line" id="server-functions-ui">
 						<code class="language-lua">
 							-- UI
-							server.announce(name, message)
-							server.whisper(peer_id, message)
+							server.announce(name, message[, peer_id]) -- peer_id省略時の値は-1(全員に送信)です
 							server.notify(peer_id, title, message, NOTIFICATION_TYPE)
 							ui_id = ui.getMapID()
 							server.removeMapID(peer_id, ui_id)
@@ -153,7 +186,7 @@
 							server.removeMapLabel(peer_id, ui_id)
 							server.addMapLine(peer_id, ui_id, start_matrix, end_matrix, width)
 							server.removeMapLine(peer_id, ui_id)
-							server.setPopup(peer_id, ui_id, name, is_show, text, x, y, z, is_worldspace, render_distance)
+							server.setPopup(peer_id, ui_id, name, is_show, text, x, y, z, is_worldspace, render_distance) -- is_worldspaceがfalseの場合、ポップアップは画面上の指定位置で表示されます(yの値は無視されます)
 							server.removePopup(peer_id, ui_id)
 							server.createPopup(peer_id, ui_id)
 						</code>
@@ -193,22 +226,24 @@
 							-- Mission
 							playlist_index = server.getPlaylistIndexByName(name)
 							playlist_index = server.getPlaylistIndexCurrent()
-							location_index = server.spawnMissionLocation(matrix, playlist_index, location_index)
-							-- 0,0,0 matrix will spawn at random location, otherwise this is a world position
+							location_index = server.getLocationIndexByName(playlist_index, name)
+							server.spawnThisPlaylistMissionLocation(name)
+							matrix = server.spawnMissionLocation(matrix, playlist_index, location_index)
+							-- 0,0,0のmatrixを指定すると(タイルの種類が同じ)ランダムな場所にスポーンします。それ以外を指定するとそのワールド座標にスポーンします
 
 							path = server.getPlaylistPath(playlist_name, is_rom)
 							server.spawnObject(matrix, OBJECT_TYPE)
 							is_found, matrix = server.getObjectPos(object_id)
 							object_id = server.spawnFire(matrix, size, magnitude, is_lit, is_initialzied, is_explosive, parent_vehicle_id, explosion_point, explosion_magnitude)
-							server.despawnObject(object_id, is_instant)
 							object_id = server.spawnCharacter(matrix, (outfit_id))
 							object_id = server.spawnAnimal(matrix, animal_type, scale)
+							server.despawnObject(object_id, is_instant)
 							server.despawnCharacter(object_id, is_instant)
 							hp, matrix = server.getCharacterData(object_id)
 							server.setCharacterData(object_id, hp, is_interactable)
 							server.setCharacterItem(object_id, slot, EQUIPMENT_ID, is_active)
-							tutorial_completed = server.getTutorial()
-							ZONE_LIST = server.getZones(tag(s))
+							ZONE_LIST = server.getZones() -- すべての環境MODのゾーンのリストを返す
+							ZONE_LIST = server.getZones(tag(s)) -- すべてのゾーンの中でタグにマッチするもののリストを返す
 							is_in_zone = server.isInZone(matrix, zone_name)
 							server.spawnMissionObject(matrix, playlist_index, location_index, object_index)
 							server.despawnMissionObject(object_id, is_instant)
@@ -218,7 +253,7 @@
 							OBJECT_DATA = server.getLocationObjectData(playlist_index, location_index, object_index)
 							server.setFireData(object_id, is_lit, is_explosive)
 							is_lit = server.getFireData(object_id)
-							matrix = server.getOceanTransform(matrix, min_search_range, max_search_range)
+							is_found, matrix = server.getOceanTransform(matrix, min_search_range, max_search_range) -- 指定範囲内のランダムな海のタイルのワールド座標を返す
 							is_in_area = server.isInTransformArea(matrix_object, matrix_zone, zone_x, zone_y, zone_z)
 						</code>
 					</pre>
@@ -253,9 +288,13 @@
 							server.removeAuth(peer_id)
 						</code>
 					</pre>
-					<p>
-						[編集メモ] v1.0.13にて、Adminの内容が途中で切れてしまっています。本ページではv1.0.4の状態のままにしておきます。
-					</p>
+					<pre class="pre-line" id="server-functions-misc">
+						<code class="language-lua">
+							-- Misc
+							tutorial_completed = server.getTutorial() -- チュートリアル中かを取得できます
+							server.setTutorial() -- チュートリアルをアクティブにするかを設定できます(独自のチュートリアルを作るのに便利です)
+						</code>
+					</pre>
 					<p id="server-functions-spawn-location">
 						以下のスクリプトはどのようにしてプレイリスト(Lua)からミッションロケーションをスポーンさせればよいのかのサンプルです。
 					</p>
@@ -690,7 +729,8 @@
 					<span class="card-title">About This Page</span>
 					<p>
 						このページはゲーム内の公式Luaガイドを元に和訳し、ついでに「こんな情報もあったらいいな」を追記していく感じのページです。  
-						そんな方はいないとは思いますが、<a href="https://github.com/istallia/Stormworks_Lua_Reference">GitHub</a>でホストしてるので、gitできる方は手伝ってくださるとありがたいです。(とりあえずは英文丸写しでもOKです)
+						<a href="https://github.com/istallia/Stormworks_Lua_Reference">GitHub</a>でホストしてるので、gitできる方は手伝ってくださるとありがたいです。<br>
+						公式Luaガイドを目視かOCRで見比べながら更新しているため、何かミスがあるかもしれません。あとアップデートが激しいときは落ち着くまで待ってから更新することにしています。
 					</p>
 					<p>
 						ページ先頭にバージョンを記載しています。最新の情報が必要な場合はゲーム内リファレンス(英語)を参照してください。
