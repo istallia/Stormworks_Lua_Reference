@@ -670,7 +670,8 @@
 					</p>
 					<pre class="pre-line">
 						<code class="language-lua">
-							local x, y, z = matrix.position(server.getPlayerPos(1))
+							-- [v1.0.21] is_successを一緒に返す関数を引数に使う場合、余分な括弧が必要
+							local x, y, z = matrix.position((server.getPlayerPos(1)))
 							server.setPlayerPos(1, matrix.translation(x, y, z))
 
 							function onTick(game_ticks)
