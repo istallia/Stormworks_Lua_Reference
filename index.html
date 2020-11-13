@@ -143,14 +143,14 @@
 							function onVehicleLoad(vehicle_id)
 							function onVehicleTeleport(vehicle_id, peer_id, x, y, z)
 							function onVehicleDespawn(vehicle_id, peer_id)
-							function onSpawnMissionObject(object_id, name, OBJECT_TYPE, playlist_index) -- スクリプトでスポーンしたオブジェクトやビークルすべてで呼び出されます
+							function onSpawnMissionComponent(object_id, name, OBJECT_TYPE, playlist_index) -- スクリプトでスポーンしたオブジェクトやビークルすべてで呼び出されます
 							function onVehicleDamaged(vehicle_id, damage) -- 修理時はダメージ値が負の値で呼び出されます
 							function httpReply(port, request, reply)
 							function onFireExtinguished(x, y, z)
 						</code>
 					</pre>
 					<p>
-						[編集メモ] moko256氏による検証によると、<code>onSpawnMissionObject</code>の第4引数はplaylist_nameではなくplaylist_indexで、ミッションプレイリストの中で何番目かを取得できるようです。しれっと修正してしまうとどちらが間違っていたのか分かりにくくなるため、一旦間違ったままリストに載せています。<br>
+						[編集メモ] moko256氏による検証によると、<code>onSpawnMissionComponent</code>の第4引数はplaylist_nameではなくplaylist_indexで、ミッションプレイリストの中で何番目かを取得できるようです。しれっと修正してしまうとどちらが間違っていたのか分かりにくくなるため、一旦間違ったままリストに載せています。<br>
 						→ v1.0.20時点では修正されていましたのでリストに反映しました。<code>delta_worldtime</code>についてはこちらのほうが分かりやすいため、このままにします。
 					</p>
 					<p>
@@ -163,7 +163,7 @@
 
 							  -- Adminのみがこのコマンドを利用できます
 							  if command == "?tp" and is_admin == true then
-							    server.teleportPlayer(user_peer_id, matrix.translation(arg1,arg2,arg3))
+							    server.setPlayerPos(user_peer_id, matrix.translation(arg1,arg2,arg3))
 							  end
 
 							  if command == "?hello" then
@@ -206,9 +206,9 @@
 							name = server.getPlayerName(peer_id)
 							PLAYER_LIST = server.getPlayers()
 							matrix = server.getPlayerPos(peer_id)
-							server.teleportPlayer(peer_id, matrix)
+							server.setPlayerPos(peer_id, matrix)
 							server.killPlayer(peer_id)
-							server.setSeated(peer_id, vehicle_id, seat_name)
+							server.setCharacterSeated(object_id, vehicle_id, seat_name)
 							x,y,z = server.getPlayerLookDirection(peer_id)
 						</code>
 					</pre>
@@ -220,7 +220,7 @@
 							server.despawnVehicle(vehicle_id, is_instant)
 							matrix = server.getVehiclePos(vehicle_id, voxel_x = 0, voxel_y = 0, voxel_z = 0)
 							name = server.getVehicleName(vehicle_id)
-							server.teleportVehicle(matrix, vehicle_id)
+							server.setVehiclePos(vehicle_id, matrix)
 							server.cleanVehicles()
 							server.pressVehicleButton(vehicle_id, button_name)
 							server.getVehicleFireCount(vehicle_id)
@@ -247,15 +247,15 @@
 							object_id = server.spawnCharacter(matrix, (outfit_id))
 							object_id = server.spawnAnimal(matrix, animal_type, scale)
 							server.despawnObject(object_id, is_instant)
-							server.despawnCharacter(object_id, is_instant)
+							-- server.despawnCharacter(object_id, is_instant) (server.despawnObjectに統合)
 							hp, matrix = server.getCharacterData(object_id)
 							server.setCharacterData(object_id, hp, is_interactable)
 							server.setCharacterItem(object_id, slot, EQUIPMENT_ID, is_active)
 							ZONE_LIST = server.getZones() -- すべての環境MODのゾーンのリストを返す
 							ZONE_LIST = server.getZones(tag(s)) -- すべてのゾーンの中でタグにマッチするもののリストを返す
 							is_in_zone = server.isInZone(matrix, zone_name)
-							server.spawnMissionObject(matrix, playlist_index, location_index, object_index)
-							server.despawnMissionObject(object_id, is_instant)
+							server.spawnMissionComponent(matrix, playlist_index, location_index, object_index)
+							-- server.despawnMissionObject(object_id, is_instant) (server.despawnObjectに統合)
 							count = server.getPlaylistCount()
 							PLAYLIST_DATA = server.getPlaylistData(playlist_index)
 							LOCATION_DATA = server.getLocationData(playlist_index, location_index)
@@ -671,7 +671,7 @@
 					<pre class="pre-line">
 						<code class="language-lua">
 							local x, y, z = matrix.position(server.getPlayerPos(1))
-							server.teleportPlayer(1, matrix.translation(x, y, z))
+							server.setPlayerPos(1, matrix.translation(x, y, z))
 
 							function onTick(game_ticks)
 
