@@ -22,7 +22,7 @@
 <div class="container">
 
 	<header class="row">
-		<h1 class="col">Stormworks(v1.0.20) Lua Reference</h1>
+		<h1 class="col">Stormworks(v1.0.21) Lua Reference</h1>
 	</header>
 
 	<div class="row">
@@ -90,7 +90,7 @@
 						<a href="#types-and-info-EQUIPMENT_ID"><li class="collection-item">EQUIPMENT_ID</li></a>
 						<a href="#types-and-info-PLAYLIST_DATA"><li class="collection-item">PLAYLIST_DATA</li></a>
 						<a href="#types-and-info-LOCATION_DATA"><li class="collection-item">LOCATION_DATA</li></a>
-						<a href="#types-and-info-OBJECT_DATA"><li class="collection-item">OBJECT_DATA</li></a>
+						<a href="#types-and-info-COMPONENT_DATA"><li class="collection-item">COMPONENT_DATA</li></a>
 						<a href="#types-and-info-OBJECT_TYPE"><li class="collection-item">OBJECT_TYPE</li></a>
 						<a href="#types-and-info-OUTFIT_TYPE"><li class="collection-item">OUTFIT_TYPE</li></a>
 						<a href="#types-and-info-GAME_SETTINGS"><li class="collection-item">GAME_SETTINGS</li></a>
@@ -132,18 +132,18 @@
 							function onCreate(is_world_create) -- ?reload_scriptsコマンド実行時にも呼び出されます
 							function onDestroy()
 							function onCustomCommand(full_message, user_peer_id, is_admin, is_auth, command, args ...)
-							function onChatMessage(sender_name, message)
+							function onChatMessage(peer_id, sender_name, message)
 							function onPlayerJoin(steam_id, name, peer_id, is_admin, is_auth)
-							function onPlayerSit(peer_id, vehicle_id, seat_name)
+							function onCharacterSit(object_id, vehicle_id, seat_name)
 							function onPlayerRespawn(peer_id)
 							function onPlayerLeave(steam_id, name, peer_id, is_admin, is_auth)
 							function onToggleMap(peer_id, is_open)
 							function onPlayerDie(steam_id, name, peer_id, is_admin, is_auth)
-							function onVehicleSpawn(vehicle_id, peer_id, x, y, z) -- スクリプトでスポーンしたビークルのpeer_idは-1です
+							function onVehicleSpawn(vehicle_id, peer_id, x, y, z, cost) -- スクリプトでスポーンしたビークルのpeer_idは-1です。costはプレイヤーがスポーンさせたときのみ計算されます
 							function onVehicleLoad(vehicle_id)
 							function onVehicleTeleport(vehicle_id, peer_id, x, y, z)
 							function onVehicleDespawn(vehicle_id, peer_id)
-							function onSpawnMissionComponent(object_id, name, OBJECT_TYPE, playlist_index) -- スクリプトでスポーンしたオブジェクトやビークルすべてで呼び出されます
+							function onSpawnMissionComponent(object_id/vehicle_id, component_name, OBJECT_TYPE, playlist_index) -- スクリプトでスポーンしたオブジェクトやビークルすべてで呼び出されます
 							function onVehicleDamaged(vehicle_id, damage) -- 修理時はダメージ値が負の値で呼び出されます
 							function httpReply(port, request, reply)
 							function onFireExtinguished(x, y, z)
@@ -196,6 +196,7 @@
 							server.addMapLine(peer_id, ui_id, start_matrix, end_matrix, width)
 							server.removeMapLine(peer_id, ui_id)
 							server.setPopup(peer_id, ui_id, name, is_show, text, x, y, z, is_worldspace, render_distance) -- is_worldspaceがfalseの場合、ポップアップは画面上の指定位置で表示されます(yの値は無視されます)
+							server.setPopupScreen(peer_id, ui_id, name, is_show, text, horizontal_offset, vertical_offset)
 							server.removePopup(peer_id, ui_id)
 							server.createPopup(peer_id, ui_id)
 						</code>
@@ -203,25 +204,25 @@
 					<pre class="pre-line" id="server-functions-player">
 						<code class="language-lua">
 							-- Player
-							name = server.getPlayerName(peer_id)
+							name, is_success = server.getPlayerName(peer_id)
 							PLAYER_LIST = server.getPlayers()
-							matrix = server.getPlayerPos(peer_id)
-							server.setPlayerPos(peer_id, matrix)
-							server.killPlayer(peer_id)
-							server.setCharacterSeated(object_id, vehicle_id, seat_name)
-							x,y,z = server.getPlayerLookDirection(peer_id)
+							matrix is_success = server.getPlayerPos(peer_id)
+							is_success = server.setPlayerPos(peer_id, matrix)
+							x,y,z, is_success = server.getPlayerLookDirection(peer_id)
 						</code>
 					</pre>
 					<pre class="pre-line" id="server-functions-vehicle">
 						<code class="language-lua">
 							-- Vehicle
-							vehicle_id = server.spawnVehicle(matrix, playlist_index, component_id)
-							vehicle_id = server.spawnVehicleSavefile(matrix, save_name)
-							server.despawnVehicle(vehicle_id, is_instant)
-							matrix = server.getVehiclePos(vehicle_id, voxel_x = 0, voxel_y = 0, voxel_z = 0)
-							name = server.getVehicleName(vehicle_id)
-							server.setVehiclePos(vehicle_id, matrix)
+							vehicle_id, is_success = server.spawnVehicle(matrix, playlist_index, component_id)
+							vehicle_id, is_success = server.spawnVehicleSavefile(matrix, save_name)
+							is_success = server.despawnVehicle(vehicle_id, is_instant)
+							matrix, is_success = server.getVehiclePos(vehicle_id, voxel_x = 0, voxel_y = 0, voxel_z = 0)
+							name, is_success = server.getVehicleName(vehicle_id)
+							is_success = server.setVehiclePos(vehicle_id, matrix)
 							server.cleanVehicles()
+							is_on = server.getVehicleButton(vehicle_id, button_name)
+							server.setVehicleSeat(vehicle_id, seat_name, axis_w, axis_d, axis_up, axis_right, button1, button2, button3, button4, button5, button6)
 							server.pressVehicleButton(vehicle_id, button_name)
 							server.getVehicleFireCount(vehicle_id)
 							server.setVehicleTooltip(vehicle_id, text)
@@ -233,37 +234,45 @@
 					<pre class="pre-line" id="server-functions-mission">
 						<code class="language-lua">
 							-- Mission
-							playlist_index = server.getPlaylistIndexByName(name)
+							playlist_index, is_success = server.getPlaylistIndexByName(name)
 							playlist_index = server.getPlaylistIndexCurrent()
-							location_index = server.getLocationIndexByName(playlist_index, name)
-							server.spawnThisPlaylistMissionLocation(name)
-							matrix = server.spawnMissionLocation(matrix, playlist_index, location_index)
+							location_index, is_success = server.getLocationIndexByName(playlist_index, name)
+							is_success = server.spawnThisPlaylistMissionLocation(name)
+							matrix, is_success = server.spawnMissionLocation(matrix, playlist_index, location_index)
 							-- 0,0,0のmatrixを指定すると(タイルの種類が同じ)ランダムな場所にスポーンします。それ以外を指定するとそのワールド座標にスポーンします
 
-							path = server.getPlaylistPath(playlist_name, is_rom)
-							server.spawnObject(matrix, OBJECT_TYPE)
-							is_found, matrix = server.getObjectPos(object_id)
-							object_id = server.spawnFire(matrix, size, magnitude, is_lit, is_initialzied, is_explosive, parent_vehicle_id, explosion_point, explosion_magnitude)
-							object_id = server.spawnCharacter(matrix, (outfit_id))
-							object_id = server.spawnAnimal(matrix, animal_type, scale)
-							server.despawnObject(object_id, is_instant)
+							is_success = server.setObjectPos(object_id)
+							path, is_success = server.getPlaylistPath(playlist_name, is_rom)
+							object_id, is_success = server.spawnObject(matrix, OBJECT_TYPE)
+							matrix, is_success = server.getObjectPos(object_id)
+							server.killCharacter(object_id)
+							object_id, is_success = server.spawnFire(matrix, size, magnitude, is_lit, is_initialzied, is_explosive, parent_vehicle_id, explosion_point, explosion_magnitude)
+							object_id, is_success = server.spawnCharacter(matrix, (OUTFIT_TYPE))
+							object_id, is_success = server.spawnAnimal(matrix, ANIMAL_TYPE, size_multiplier)
+							is_success = server.despawnObject(object_id, is_instant)
 							-- server.despawnCharacter(object_id, is_instant) (server.despawnObjectに統合)
-							hp, matrix = server.getCharacterData(object_id)
+							hp, matrix, is_incapacitated, is_dead, is_interactable = server.getCharacterData(object_id)
+							object_id, is_success = server.getPlayerCharacterID(peer_id)
+							EQUIPMENT_ID, is_success= server.getCharacterItem(object_id, SLOT_NUMBER)
+							server.setCharacterSeated(object_id, vehicle_id, seat_name)
+							server.reviveCharacter(object_id)
 							server.setCharacterData(object_id, hp, is_interactable)
 							server.setCharacterItem(object_id, slot, EQUIPMENT_ID, is_active)
 							ZONE_LIST = server.getZones() -- すべての環境MODのゾーンのリストを返す
 							ZONE_LIST = server.getZones(tag(s)) -- すべてのゾーンの中でタグにマッチするもののリストを返す
 							is_in_zone = server.isInZone(matrix, zone_name)
-							server.spawnMissionComponent(matrix, playlist_index, location_index, object_index)
+							COMPONENT, is_success = server.spawnMissionComponent(matrix, playlist_index, location_index, object_index)
 							-- server.despawnMissionObject(object_id, is_instant) (server.despawnObjectに統合)
 							count = server.getPlaylistCount()
 							PLAYLIST_DATA = server.getPlaylistData(playlist_index)
 							LOCATION_DATA = server.getLocationData(playlist_index, location_index)
-							OBJECT_DATA = server.getLocationObjectData(playlist_index, location_index, object_index)
+							COMPONENT_DATA, is_success = server.getLocationComponentData(playlist_index, location_index, *component_index*)
 							server.setFireData(object_id, is_lit, is_explosive)
 							is_lit = server.getFireData(object_id)
-							is_found, matrix = server.getOceanTransform(matrix, min_search_range, max_search_range) -- 指定範囲内のランダムな海のタイルのワールド座標を返す
+							matrix, is_success = server.getOceanTransform(matrix, min_search_range, max_search_range) -- 指定範囲内のランダムな海のタイルのワールド座標を返す
 							is_in_area = server.isInTransformArea(matrix_object, matrix_zone, zone_x, zone_y, zone_z)
+
+							-- [v1.0.21] 公式のリファレンスではObjectsというセクションになっていてそれに合わせるべきなのですが、力尽きました……
 						</code>
 					</pre>
 					<pre class="pre-line" id="server-functions-game">
@@ -405,7 +414,8 @@
 							    ["id"] = peer_id,
 							    ["name"] = name,
 							    ["admin"] = is_admin,
-							    ["auth"] = is_auth
+							    ["auth"] = is_auth,
+							    ["steam_id"] = steam_id
 							  }
 							}
 						</code>
@@ -483,13 +493,28 @@
 							  ["tile"] = tile_filename,
 							  ["env_spawn_count"] = spawn_count,
 							  ["env_mod"] = is_env_mod,
-							  ["object_count"] = object_count
+							  ["object_count"] = object_count,
+							  ["component_count"] = component_count
 							}
 						</code>
 					</pre>
-					<pre class="pre-line" id="types-and-info-OBJECT_DATA">
+					<pre class="pre-line" id="types-and-info-COMPONENT">
 						<code class="language-lua">
-							OBJECT_DATA | {
+							COMPONENT | {
+								["name"] = name,
+								["display_name"] = display_name,
+								["type"] = type,
+								["x"] = x,
+								["y"] = y,
+								["z"] = z,
+								["transform"] = matrix,
+								["id"] = object_id / vehicle_id
+							}
+						</code>
+					</pre>
+					<pre class="pre-line" id="types-and-info-COMPONENT_DATA">
+						<code class="language-lua">
+							COMPONENT_DATA | {
 							  ["name"] = name,
 							  ["display_name"] = display_name,
 							  ["type"] = TYPE_STRING,
@@ -743,7 +768,8 @@
 						公式Luaガイドを目視かOCRで見比べながら更新しているため、何かミスがあるかもしれません。あとアップデートが激しいときは落ち着くまで待ってから更新することにしています。
 					</p>
 					<p>
-						ページ先頭にバージョンを記載しています。最新の情報が必要な場合はゲーム内リファレンス(英語)を参照してください。
+						ページ先頭にバージョンを記載しています。最新の情報が必要な場合はゲーム内リファレンス(英語)を参照してください。<br>
+						v1.0.21で行われたLuaへの大きな変更で燃え尽きました。カテゴリごと変わってたりするので、追従するには修正というレベルを超えた改稿が必要になるかもしれません。
 					</p>
 					<p>
 						使用したもの...<br>
